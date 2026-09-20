@@ -2,7 +2,7 @@ import os
 from ament_index_python.packages import get_package_share_directory
 
 from launch_ros.actions import Node
-from launch.conditions import IfCondition
+from launch.conditions import IfCondition, UnlessCondition
 from launch import LaunchDescription
 from launch.substitutions import Command, LaunchConfiguration
 from launch.actions import DeclareLaunchArgument, IncludeLaunchDescription
@@ -63,6 +63,7 @@ def generate_launch_description():
         executable='joint_state_publisher',
         name='joint_state_publisher',
         output='screen',
+        condition=UnlessCondition(use_gui),
         parameters=[{
             'source_list': ['/controller_manager/joint_states'],
             'rate': 20.0
@@ -75,7 +76,7 @@ def generate_launch_description():
         name='joint_state_publisher_gui',
         output='screen',
         condition=IfCondition(use_gui),
-        remappings=[('/joint_states', 'joint_controller')]
+        # remappings=[('/joint_states', 'joint_controller')]
     )
 
     robot_state_publisher_node = Node(
