@@ -8,6 +8,7 @@ from launch.substitutions import LaunchConfiguration, PythonExpression
 from launch.actions import (DeclareLaunchArgument, GroupAction, OpaqueFunction,
                             IncludeLaunchDescription, SetEnvironmentVariable)
 from launch.launch_description_sources import PythonLaunchDescriptionSource
+from nav2_common.launch import RewrittenYaml
 
 def launch_setup(context):
     compiled = os.environ['need_compile']
@@ -74,13 +75,20 @@ def launch_setup(context):
         'use_teb', default_value='true',
     )
 
+    # Replace every use_sim_time in the params file, including the costmap
+    # child nodes that per-node {'use_sim_time': ...} overrides can't reach
+    configured_params = RewrittenYaml(
+        source_file=params_file,
+        param_rewrites={'use_sim_time': use_sim_time},
+        convert_types=True)
+
     # Specify the actions
     bringup_cmd_group = GroupAction([
         Node(
             name='nav2_container',
             package='rclcpp_components',
             executable='component_container_isolated',
-            parameters=[params_file, {'autostart': autostart}],
+            parameters=[configured_params, {'autostart': autostart}],
             arguments=['--ros-args', '--log-level', log_level],
             remappings=remappings,
             output='screen'),
@@ -90,7 +98,7 @@ def launch_setup(context):
             condition=UnlessCondition(rtabmap),
             launch_arguments={'namespace': namespace,
                               'map': map_yaml_file,
-                              'params_file': params_file,
+                              'params_file': configured_params,
                               'use_sim_time': use_sim_time,
                               'use_namespace': use_namespace,
                               'autostart': autostart}.items()),
@@ -102,7 +110,7 @@ def launch_setup(context):
                               'use_namespace': use_namespace,
                               'use_sim_time': use_sim_time,
                               'autostart': autostart,
-                              'params_file': params_file,
+                              'params_file': configured_params,
                               'use_teb': use_teb}.items()),
     ])
 
