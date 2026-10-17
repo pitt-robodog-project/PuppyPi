@@ -1,0 +1,126 @@
+<?xml version="1.0"?>
+<sdf version="1.6">
+    <world name="puppy_room">
+        <!-- a flat floor and light source -->
+        <include><uri>model://ground_plane</uri></include>
+        <include><uri>model://sun</uri></include>
+        
+        <model name="room">
+            <static>true</static>
+            <link name="wall_north">
+                <!-- pose = x y z roll pitch yaw. z is half the height, so the wall sits on the floor -->
+                <pose>0 2.0 0.25 0 0 0</pose>
+                <collision name="wall_north_collision">
+                    <geometry>
+                        <box>
+                            <size>6 0.1 0.5</size>
+                        </box>
+                    </geometry>
+                </collision>
+                <visual name="wall_north_visual">
+                    <geometry>
+                        <box>
+                            <size>6 0.1 0.5</size>
+                        </box>
+                    </geometry>
+                </visual>
+            </link>
+            <link name="wall_south">
+                <!-- pose = x y z roll pitch yaw. z is half the height, so the wall sits on the floor -->
+                <pose>0 -2.0 0.25 0 0 0</pose>
+                <collision name="wall_south_collision">
+                    <geometry>
+                        <box>
+                            <size>6 0.1 0.5</size>
+                        </box>
+                    </geometry>
+                </collision>
+                <visual name="wall_south_visual">
+                    <geometry>
+                        <box>
+                            <size>6 0.1 0.5</size>
+                        </box>
+                    </geometry>
+                </visual>
+            </link>
+            <link name="wall_east">
+                <!-- pose = x y z roll pitch yaw. z is half the height, so the wall sits on the floor -->
+                <pose>3.05 0 0.25 0 0 0</pose>
+                <collision name="wall_east_collision">
+                    <geometry>
+                        <box>
+                            <size>0.1 4.1 0.5</size>
+                        </box>
+                    </geometry>
+                </collision>
+                <visual name="wall_east_visual">
+                    <geometry>
+                        <box>
+                            <size>0.1 4.1 0.5</size>
+                        </box>
+                    </geometry>
+                </visual>
+            </link>
+            <link name="wall_west">
+                <!-- pose = x y z roll pitch yaw. z is half the height, so the wall sits on the floor -->
+                <pose>-3.05 0 0.25 0 0 0</pose>
+                <collision name="wall_west_collision">
+                    <geometry>
+                        <box>
+                            <size>0.1 4.1 0.5</size>
+                        </box>
+                    </geometry>
+                </collision>
+                <visual name="wall_west_visual">
+                    <geometry>
+                        <box>
+                            <size>0.1 4.1 0.5</size>
+                        </box>
+                    </geometry>
+                </visual>
+            </link>
+
+            <link name="box1">
+                <!-- pose = x y z roll pitch yaw. z is half the height, so the wall sits on the floor -->
+                <pose>-1.5 0.8 0.25 0 0 0</pose>
+
+                <collision name="box1_collision">
+                    <geometry>
+                        <box>
+                            <size>0.2 0.2 0.5</size>
+                        </box>
+                    </geometry>
+                </collision>
+                <visual name="box1_visual">
+                    <geometry>
+                        <box>
+                            <size>0.2 0.2 0.5</size>
+                        </box>
+                    </geometry>
+                </visual>
+            </link>
+
+            <link name="box2">
+                <!-- pose = x y z roll pitch yaw. z is half the height, so the wall sits on the floor -->
+                <pose>2 0.2 0.2 0 0 0</pose>
+                <collision name="box2_collision">
+                    <geometry>
+                        <box>
+                            <size>0.4 0.4 0.4</size>
+                        </box>
+                    </geometry>
+                </collision>
+                <visual name="box2_visual">
+                    <geometry>
+                        <box>
+                            <size>0.4 0.4 0.4</size>
+                        </box>
+                    </geometry>
+                </visual>
+            </link>
+
+
+
+        </model>
+    </world>
+</sdf>
