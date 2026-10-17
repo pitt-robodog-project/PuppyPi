@@ -1,0 +1,55 @@
+<?xml version="1.0"?>
+<!-- Gazebo-only additions on top of the real PuppyPi model -->
+<robot name="puppy" xmlns:xacro="http://www.ros.org/wiki/xacro">
+    <!-- Declared BEFORE the include, so this default wins over puppy.xacro's "false" -->
+  <xacro:arg name="fixed_legs" default="true"/>
+  <xacro:include filename="$(find puppypi_description)/urdf/puppy.xacro"/>
+
+    <gazebo>
+        <plugin name="planar_move" filename="libgazebo_ros_planar_move.so">
+            <update_rate>1000</update_rate>
+            <publish_rate>50</publish_rate>
+            <publish_odom>true</publish_odom>
+            <publish_odom_tf>true</publish_odom_tf>
+            <odometry_frame>odom</odometry_frame>
+            <robot_base_frame>base_footprint</robot_base_frame>
+        </plugin>
+    </gazebo>
+      <!-- reference = attach to this URDF link; the sensor sits at that link's position -->
+  <gazebo reference="lidar_frame">
+    <sensor name="lidar" type="ray">
+      <always_on>true</always_on>
+      <visualize>true</visualize>
+      <update_rate>10</update_rate>
+      <ray>
+        <scan>
+          <horizontal>
+            <samples>450</samples>
+            <resolution>1</resolution>
+            <min_angle>-3.14159</min_angle>
+            <max_angle>3.14159</max_angle>
+          </horizontal>
+        </scan>
+        <range>
+          <min>0.12</min>
+          <!-- <min>0.02</min> -->
+          <max>12.0</max>
+          <resolution>0.01</resolution>
+        </range>
+        <noise>
+          <type>gaussian</type>
+          <mean>0.0</mean>
+          <stddev>0.01</stddev>
+        </noise>
+      </ray>
+      <plugin name="lidar_plugin" filename="libgazebo_ros_ray_sensor.so">
+        <ros>
+          <remapping>~/out:=scan</remapping>
+        </ros>
+        <output_type>sensor_msgs/LaserScan</output_type>
+        <frame_name>lidar_frame</frame_name>
+      </plugin>
+    </sensor>
+  </gazebo>
+
+</robot>
