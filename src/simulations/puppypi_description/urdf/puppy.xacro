@@ -7,6 +7,17 @@
   <xacro:property name="motor_torque" value="0.5"/>
   <xacro:property name="motor_vec" value="2"/>
 
+  <!-- fixed_legs=true locks all 8 leg joints in a standing pose for the Gazebo sim -->
+  <xacro:arg name="fixed_legs" default="false"/>
+  <xacro:if value="$(arg fixed_legs)">
+    <xacro:property name="leg_joint_type" value="fixed"/>
+    <xacro:property name="stand_joint1" value="0.8"/>
+  </xacro:if>
+  <xacro:unless value="$(arg fixed_legs)">
+    <xacro:property name="leg_joint_type" value="revolute"/>
+    <xacro:property name="stand_joint1" value="0.0"/>
+  </xacro:unless>
+
   <link name="base_footprint" />
   <joint name="base_joint" type="fixed">
     <parent link="base_footprint" />
@@ -131,10 +142,10 @@
   </link>
   <joint
     name="lb_joint1"
-    type="revolute">
+    type="${leg_joint_type}">
     <origin
       xyz="0.0420105649539 0.0778693100523862 0.0159880060021007"
-      rpy="-0.752 0 0" />
+      rpy="${-0.752 + stand_joint1} 0 0" />
     <parent
       link="base_dummy" />
     <child
@@ -187,7 +198,7 @@
   </link>
   <joint
     name="lb_joint2"
-    type="revolute">
+    type="${leg_joint_type}">
     <origin
       xyz="0.0120498902789596 0.0525235728370777 -0.052877465200695"
       rpy="0 0 0" />
@@ -243,10 +254,10 @@
   </link>
   <joint
     name="rb_joint1"
-    type="revolute">
+    type="${leg_joint_type}">
     <origin
       xyz="-0.0420105649534512 0.0778693100523859 0.0159880060091649"
-      rpy="-0.752 0 0" />
+      rpy="${-0.752 + stand_joint1} 0 0" />
     <parent
       link="base_dummy" />
     <child
@@ -299,7 +310,7 @@
   </link>
   <joint
     name="rb_joint2"
-    type="revolute">
+    type="${leg_joint_type}">
     <origin
       xyz="-0.0185498902789654 0.0525235728370851 -0.0528774652006949"
       rpy="0 0 0" />
@@ -355,10 +366,10 @@
   </link>
   <joint
     name="rf_joint1"
-    type="revolute">
+    type="${leg_joint_type}">
     <origin
       xyz="-0.0420105469986279 -0.0778692767711234 0.0106512951143373"
-      rpy="-0.752 0 0" />
+      rpy="${-0.752 + stand_joint1} 0 0" />
     <parent
       link="base_dummy" />
     <child
@@ -411,7 +422,7 @@
   </link>
   <joint
     name="rf_joint2"
-    type="revolute">
+    type="${leg_joint_type}">
     <origin
       xyz="-0.0185498902789602 0.0525235728370692 -0.0528774652007036"
       rpy="0 0 0" />
@@ -467,10 +478,10 @@
   </link>
   <joint
     name="lf_joint1"
-    type="revolute">
+    type="${leg_joint_type}">
     <origin
       xyz="0.0420105469981795 -0.0778692767711239 0.0106512951072731"
-      rpy="-0.752 0 0" />
+      rpy="${-0.752 + stand_joint1} 0 0" />
     <parent
       link="base_dummy" />
     <child
@@ -523,7 +534,7 @@
   </link>
   <joint
     name="lf_joint2"
-    type="revolute">
+    type="${leg_joint_type}">
     <origin
       xyz="0.0120498902789604 0.0525235728370695 -0.0528774652007036"
       rpy="0 0 0" />
